@@ -10,7 +10,11 @@ class CartController extends Controller
 {
     public function index()
     {
-        return view('cart.index');
+        $cart = Cart::where('session_id', session()->getId())->first();
+
+        abort_unless($cart, 404);
+                
+        return view('cart.index', get_defined_vars());
     }
 
     public function addToCart(Course $course)

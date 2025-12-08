@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Cashier\Cashier;
 
 class Course extends Model
 {
@@ -15,7 +16,7 @@ class Course extends Model
 
     public function price()
     {
-        // return Cashier::formatAmount($this->price, env('CASHIER_CURRENCY'));
+        return Cashier::formatAmount($this->price, env('CASHIER_CURRENCY'));
     }
 
     public function orders()
