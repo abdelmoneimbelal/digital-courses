@@ -10,7 +10,7 @@ class Course extends Model
 
     public function carts()
     {
-        // return $this->belongsToMany(Cart::class);
+        return $this->belongsToMany(Cart::class);
     }
 
     public function price()
