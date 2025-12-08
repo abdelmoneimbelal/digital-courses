@@ -22,12 +22,12 @@
                             <p>{{ $course->description }}</p>
                             <p>{{ $course->price() }}</p>
                             {{-- @if ($cart && $cart->courses->contains($course)) --}}
-                                <a href="#" class="btn btn-sm btn-danger">Remove From
-                                {{-- <a href="{{ route('removeFromCart', $course) }}" class="btn btn-sm btn-danger">Remove From --}}
-                                    Cart</a>
+                                {{-- <a href="#" class="btn btn-sm btn-danger">Remove From --}}
+                                {{-- <a href="{{ route('removeFromCart', $course) }}" class="btn btn-sm btn-danger">Remove From
+                                    Cart</a> --}}
                             {{-- @else --}}
-                                <a href="#" class="btn btn-sm btn-primary">Add To
-                                {{-- <a href="{{ route('addtoCart', $course) }}" class="btn btn-sm btn-primary">Add To --}}
+                                {{-- <a href="#" class="btn btn-sm btn-primary">Add To --}}
+                                <a href="{{ route('addtoCart', $course) }}" class="btn btn-sm btn-primary">Add To
                                     Cart</a>
                             {{-- @endif --}}
                         </div>
