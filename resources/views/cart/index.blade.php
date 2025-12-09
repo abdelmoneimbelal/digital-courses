@@ -31,8 +31,8 @@
                                         Click
                                         Checkout</a>
                                 @endif --}}
-                                <a href="#"
-                                {{-- <a href="{{ route('direct.paymentMethod') }}" --}}
+                               
+                                <a href="{{ route('checkout') }}"
                                     class="btn btn-sm btn-success">Checkout</a>
                             </div>
                         </div>

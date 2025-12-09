@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\Cart;
 use App\Models\Course;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
-use App\Models\Cart;
+use App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     $courses = Course::all();
@@ -24,7 +25,7 @@ Route::controller(CartController::class)->group(function () {
     Route::get('/removeFromCart/{course:slug}', 'removeFromCart')->name('removeFromCart');
 });
 
-// Checkout
+// \Laravel\Cashier\Checkout
 Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout', 'checkout')->middleware('auth')->name('checkout');
     Route::get('/checkout/enableCoupons', 'enableCoupons')->middleware('auth')->name('checkout.enableCoupons');
@@ -35,7 +36,7 @@ Route::controller(CheckoutController::class)->group(function () {
     Route::get('/checkout/cancel', 'cancel')->middleware('auth')->name('checkout.cancel');
 });
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', action: function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
