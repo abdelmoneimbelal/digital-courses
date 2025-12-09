@@ -23,11 +23,7 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('cart.index')" :active="request()->routeIs(patterns: 'cart.index')">
-                        @php
-                            $cart = \App\Models\Cart::where('session_id', session()->getId())->first();
-                            $cartCount = $cart ? $cart->courses->count() : 0;
-                        @endphp
-                        {{ __('Cart') }} <span class="badge bg-primary ms-1">{{ $cartCount }}</span>
+                        {{ __('Cart') }} <span class="badge bg-primary ms-1">{{ $cart ? $cart->courses->count() : 0 }}</span>
                     </x-nav-link>
                 </div>
             </div>
