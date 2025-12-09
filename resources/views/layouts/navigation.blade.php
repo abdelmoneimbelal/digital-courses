@@ -22,8 +22,12 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.index')">
-                        {{ __('Cart') }} <span class="badge bg-primary ms-1">{{ count(\App\Models\Cart::where('session_id', session()->getId())->first()->courses) > 0 ? count(\App\Models\Cart::where('session_id', session()->getId())->first()->courses) : 0 }}</span>
+                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs(patterns: 'cart.index')">
+                        @php
+                            $cart = \App\Models\Cart::where('session_id', session()->getId())->first();
+                            $cartCount = $cart ? $cart->courses->count() : 0;
+                        @endphp
+                        {{ __('Cart') }} <span class="badge bg-primary ms-1">{{ $cartCount }}</span>
                     </x-nav-link>
                 </div>
             </div>

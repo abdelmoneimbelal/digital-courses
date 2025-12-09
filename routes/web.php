@@ -5,9 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Cart;
 
 Route::get('/', function () {
     $courses = Course::all();
+    $cart = Cart::where('session_id', session()->getId())->first();
     return view('home', get_defined_vars());
 })->name('home');
 
