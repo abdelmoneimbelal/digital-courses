@@ -9,7 +9,6 @@ use App\Models\Cart;
 
 Route::get('/', function () {
     $courses = Course::all();
-    $cart = Cart::where('session_id', session()->getId())->first();
     return view('home', get_defined_vars());
 })->name('home');
 
