@@ -12,10 +12,19 @@ class CheckoutController extends Controller
         $cart = Cart::session()->first();
         $prices = $cart->courses->pluck('stripe_price_id')->toArray();
 
+        // $sessionOptions = [
+        //     // 'success_url' => route('home', ['message' => 'Payment successful!']),
+        //     'success_url' => route('checkout.success').'?session_id={CHECKOUT_SESSION_ID}',
+        //     'cancel_url' => route('checkout.cancel').'?session_id={CHECKOUT_SESSION_ID}',
+        //     'metadata' => [
+        //         'cart_id' => $cart->id
+        //     ]
+        // ];
+
         $sessionOptions = [
             // 'success_url' => route('home', ['message' => 'Payment successful!']),
-            'success_url' => route('checkout.success').'?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => route('checkout.cancel').'?session_id={CHECKOUT_SESSION_ID}',
+            'success_url' => route('home', ['message' => 'Payment successful!']),
+            'cancel_url' => route('home', ['message' => 'Payment failed!']),
             'metadata' => [
                 'cart_id' => $cart->id
             ]
@@ -29,7 +38,7 @@ class CheckoutController extends Controller
 
         // dd(Auth::user()->checkout($prices, $sessionOptions, $customerOptions));
 
-        return Auth::user()->checkout($prices);
+        return Auth::user()->checkout($prices, $sessionOptions);
         // return Auth::user()->checkout($prices, $sessionOptions, $customerOptions);
     }
 }
