@@ -42,7 +42,6 @@ class CheckoutController extends Controller
 
         // dd(Auth::user()->checkout($prices, $sessionOptions, $customerOptions));
 
-        return Auth::user()->checkout($prices, $sessionOptions);
-        // return Auth::user()->checkout($prices, $sessionOptions, $customerOptions);
+        return Auth::user()->checkout($prices, $sessionOptions, $customerOptions);
     }
 }
