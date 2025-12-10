@@ -25,6 +25,10 @@ class CheckoutController extends Controller
             // 'success_url' => route('home', ['message' => 'Payment successful!']),
             'success_url' => route('home', ['message' => 'Payment successful!']),
             'cancel_url' => route('home', ['message' => 'Payment failed!']),
+            'billing_address_collection' => 'required',
+            'phone_number_collection' => [
+                'enabled' => true,
+            ],
             'metadata' => [
                 'cart_id' => $cart->id
             ]
