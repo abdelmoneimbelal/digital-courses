@@ -45,6 +45,23 @@ class CheckoutController extends Controller
         return Auth::user()->checkout($prices, $sessionOptions, $customerOptions);
     }
 
+    public function enableCoupons()
+    {
+        $cart = Cart::session()->first();
+        $prices = $cart->courses->pluck('stripe_price_id')->toArray();
+
+        $sessionOptions = [
+            'success_url' => route('home', ['message' => 'Payment successful!']),
+            'cancel_url' => route('home', ['message' => 'Payment failed!']),
+            "vallow_promotion_codes" => true,
+        ];
+
+        return Auth::user()
+        // ->withCoupon('Lt1Jkg0s')
+        // ->withPromotionCode('promo_1QFfWcCZngcgegWO6JCPdKla')
+        ->checkout($prices, $sessionOptions);
+    }
+
     public function success(Request $request)   
     {
         $session = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
