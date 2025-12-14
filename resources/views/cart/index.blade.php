@@ -9,6 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
+                    @if (request('message'))
+                        <div class="alert alert-warning">
+                            {{ request('message') }}
+                        </div>
+                    @endif
                     @if ($cart && count($cart->courses) > 0)
                         @foreach ($cart->courses as $course)
                             <div class="bg-light mb-3 p-2 d-flex justify-content-between align-items-center">
@@ -34,6 +39,8 @@
                                
                                 <a href="{{ route('checkout') }}"
                                     class="btn btn-sm btn-success">Checkout</a>
+                                <a href="{{ route('checkout.enableCoupons') }}"
+                                    class="btn btn-sm btn-info">Checkout with Coupons</a>
                             </div>
                         </div>
                     @else

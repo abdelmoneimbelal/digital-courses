@@ -53,7 +53,7 @@ class CheckoutController extends Controller
         $sessionOptions = [
             'success_url' => route('home', ['message' => 'Payment successful!']),
             'cancel_url' => route('home', ['message' => 'Payment failed!']),
-            "vallow_promotion_codes" => true,
+            "allow_promotion_codes" => true,
         ];
 
         return Auth::user()
@@ -80,10 +80,13 @@ class CheckoutController extends Controller
             return redirect()->route('home', ['message' => 'Payment successful!']);
         }
 
+        return redirect()->route('cart.index', ['message' => 'Payment was not completed.']);
     }
 
     public function cancel(Request $request)   
     {
         $session = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
+        
+        return redirect()->route('cart.index', ['message' => 'Payment was cancelled. You can continue shopping.']);
     }
 }
