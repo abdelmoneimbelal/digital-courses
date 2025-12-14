@@ -62,6 +62,22 @@ class CheckoutController extends Controller
         ->checkout($prices, $sessionOptions);
     }
 
+    public function nonStripeProducts()
+    {
+        $cart = Cart::session()->first();
+        $amount = $cart->courses->sum('price');
+        
+        $sessionOptions = [
+            'success_url' => route('checkout.success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.cancel').'?session_id={CHECKOUT_SESSION_ID}',
+            'metadata' => [
+                'cart_id' => $cart->id
+            ]
+        ];
+
+        return Auth::user()->checkoutCharge($amount, 'courses bundles', 1, $sessionOptions);
+    }
+
     public function success(Request $request)   
     {
         $session = $request->user()->stripe()->checkout->sessions->retrieve($request->get('session_id'));
