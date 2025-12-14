@@ -92,11 +92,11 @@ class CheckoutController extends Controller
                     'unit_amount' => $course->price,
                 ],
                 'quantity' => 1,
-                // 'adjustable_quantity' => [
-                //     'enabled' => true,
-                //     'maximum' => 100,
-                //     'minimum' => 0,
-                // ],
+                'adjustable_quantity' => [
+                    'enabled' => true,
+                    'maximum' => 100,
+                    'minimum' => 1,
+                ],
             ];
         })->toArray();
 
