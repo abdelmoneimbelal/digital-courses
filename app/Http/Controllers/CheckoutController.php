@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Cart;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Order;
+use Illuminate\Http\Request;
+use Laravel\Cashier\Checkout;
+use Illuminate\Support\Facades\Auth;
+
 class CheckoutController extends Controller
 {
     public function checkout()
@@ -111,6 +113,37 @@ class CheckoutController extends Controller
         ];
 
         return Auth::user()->checkout($courses,  $sessionOptions);
+    }
+
+    public function guest()
+    {
+        $cart = Cart::session()->first();
+
+        $courses = $cart->courses()->get()->map(function ($course) {
+            return [
+                'price_data' => [
+                    'currency' => env('CASHIER_CURRENCY', 'usd'),
+                    'product_data' => [
+                        'name' => $course->name,
+                    ],
+                    'unit_amount' => $course->price,
+                ],
+                'quantity' => 1,
+                'adjustable_quantity' => [
+                    'enabled' => true,
+                    'maximum' => 100,
+                    'minimum' => 0,
+                ],
+            ];
+        })->toArray();
+
+        $sessionOptions = [
+            'success_url' => route('checkout.success').'?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => route('checkout.cancel').'?session_id={CHECKOUT_SESSION_ID}',
+            'line_items' => $courses
+        ];
+
+        return Checkout::guest()->create($courses, $sessionOptions);
     }
 
     public function success(Request $request)   

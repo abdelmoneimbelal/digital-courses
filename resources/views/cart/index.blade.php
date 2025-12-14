@@ -45,6 +45,8 @@
                                     class="btn btn-sm btn-warning">Checkout with Non-Stripe Products</a> --}}
                                 <a href="{{ route('checkout.lineItems') }}"
                                     class="btn btn-sm btn-primary">Checkout with Line Items</a>
+                                <a href="{{ route('checkout.guest') }}"
+                                    class="btn btn-sm btn-secondary">Checkout as Guest</a>
                             </div>
                         </div>
                     @else
