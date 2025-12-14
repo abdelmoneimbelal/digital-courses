@@ -41,8 +41,10 @@
                                     class="btn btn-sm btn-success">Checkout</a> --}}
                                 {{-- <a href="{{ route('checkout.enableCoupons') }}"
                                     class="btn btn-sm btn-info">Checkout with Coupons</a> --}}
-                                <a href="{{ route('checkout.nonStripeProducts') }}"
-                                    class="btn btn-sm btn-warning">Checkout with Non-Stripe Products</a>
+                                {{-- <a href="{{ route('checkout.nonStripeProducts') }}"
+                                    class="btn btn-sm btn-warning">Checkout with Non-Stripe Products</a> --}}
+                                <a href="{{ route('checkout.lineItems') }}"
+                                    class="btn btn-sm btn-primary">Checkout with Line Items</a>
                             </div>
                         </div>
                     @else
