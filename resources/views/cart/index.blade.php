@@ -43,10 +43,12 @@
                                     class="btn btn-sm btn-info">Checkout with Coupons</a> --}}
                                 {{-- <a href="{{ route('checkout.nonStripeProducts') }}"
                                     class="btn btn-sm btn-warning">Checkout with Non-Stripe Products</a> --}}
-                                <a href="{{ route('checkout.lineItems') }}"
+                                {{-- <a href="{{ route('checkout.lineItems') }}"
                                     class="btn btn-sm btn-primary">Checkout with Line Items</a>
                                 <a href="{{ route('checkout.guest') }}"
-                                    class="btn btn-sm btn-secondary">Checkout as Guest</a>
+                                    class="btn btn-sm btn-secondary">Checkout as Guest</a> --}}
+                                <a href="{{ route('direct.paymentMethod') }}"
+                                    class="btn btn-sm btn-success">Checkout with Payment Method</a>
                             </div>
                         </div>
                     @else
