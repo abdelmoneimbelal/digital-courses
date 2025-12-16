@@ -30,7 +30,9 @@
         // Initialize Stripe
         const stripe = Stripe(@json(env('STRIPE_KEY')));
         const elements = stripe.elements();
-        const cardElement = elements.create('card');
+        const cardElement = elements.create('card', {
+            hidePostalCode: true
+        });
         cardElement.mount('#card-element');
 
         // Handle Payment
@@ -43,11 +45,29 @@
             );
 
             if (error) {
-                alert('error');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error Payment Method',
+                    text: error.message || 'An error occurred while processing the payment',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
                 console.log(error);
                 // Display "error.message" to the user...
             } else {
-                alert('success');
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Payment Method Success',
+                    // text: 'Payment Method Success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true
+                });
                 console.log(paymentMethod);
                 document.getElementById('payment_method').value = paymentMethod.id;
                 document.getElementById('form').submit();
