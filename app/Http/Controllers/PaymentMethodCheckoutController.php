@@ -27,14 +27,12 @@ class PaymentMethodCheckoutController extends Controller
             $amount = $cart->courses->sum('price');
             $paymentMethod = $request->payment_method;
             $payment = Auth::user()->charge($amount, $paymentMethod, [
-                'return_url' => route('home', ['message' => 'Payment successful!']),
+                'return_url' => route('direct.paymentMethod.success'),
                 'metadata' => [
                     'cart_id' => $cart->id,
                     'user_id' => Auth::user()->id
                 ]
             ]);
-
-            // return redirect()->route('home', ['message'=> 'Payment successful!']);
 
             if ($payment->status == 'succeeded') {
                 $order = Order::create([
@@ -42,6 +40,7 @@ class PaymentMethodCheckoutController extends Controller
                 ]);
                 $order->courses()->attach($cart->courses->pluck('id')->toArray());
                 $cart->delete();
+                DB::commit();
                 return redirect()->route('home', ['message' => 'Payment successful!']);
             }
             DB::commit();
@@ -49,5 +48,43 @@ class PaymentMethodCheckoutController extends Controller
             DB::rollBack();
             return redirect()->route('home', ['message' => 'Payment failed!']);
         }
+    }
+
+    /**
+     * معالجة العودة من Stripe بعد الدفع (مثل 3D Secure).
+     * Stripe يضيف payment_intent في الرابط عند التوجيه.
+     */
+    public function success(Request $request)
+    {
+        $paymentIntentId = $request->query('payment_intent');
+        if (!$paymentIntentId) {
+            return redirect()->route('home', ['message' => 'Invalid return from payment.']);
+        }
+
+        $paymentIntent = Auth::user()->stripe()->paymentIntents->retrieve($paymentIntentId);
+        if ($paymentIntent->status !== 'succeeded') {
+            return redirect()->route('home', ['message' => 'Payment was not completed.']);
+        }
+
+        $cartId = $paymentIntent->metadata->cart_id ?? null;
+        if (!$cartId) {
+            return redirect()->route('home', ['message' => 'Payment successful!']);
+        }
+
+        $cart = Cart::find($cartId);
+        if (!$cart) {
+            return redirect()->route('home', ['message' => 'Payment successful!']);
+        }
+        if ($cart->user_id && $cart->user_id != Auth::id()) {
+            return redirect()->route('home', ['message' => 'Payment successful!']);
+        }
+
+        $order = Order::create([
+            'user_id' => Auth::user()->id,
+        ]);
+        $order->courses()->attach($cart->courses->pluck('id')->toArray());
+        $cart->delete();
+
+        return redirect()->route('home', ['message' => 'Payment successful!']);
     }
 }
