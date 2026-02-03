@@ -18,10 +18,10 @@ class PaymentMethodCheckoutController extends Controller
     public function post(Request $request)
     {
         DB::beginTransaction();
-        // if ($request->payment_method) {
-        //     Auth::user()->updateOrCreateStripeCustomer();
-        //     Auth::user()->updateDefaultPaymentMethod($request->payment_method);
-        // }
+        if ($request->payment_method) {
+            Auth::user()->updateOrCreateStripeCustomer();
+            Auth::user()->updateDefaultPaymentMethod($request->payment_method);
+        }
         try {
             $cart = Cart::session()->first();
             $amount = $cart->courses->sum('price');
@@ -86,5 +86,27 @@ class PaymentMethodCheckoutController extends Controller
         $cart->delete();
 
         return redirect()->route('home', ['message' => 'Payment successful!']);
+    }
+
+    public function oneClick(Request $request)
+    {
+        if (Auth::user()->hasDefaultPaymentMethod()) {
+            $cart = Cart::session()->first();
+            $amount = $cart->courses->sum('price');
+            $paymentMethod = Auth::user()->defaultPaymentMethod()->id;
+            $payment = Auth::user()->charge($amount, $paymentMethod, [
+                'return_url' => route('home', ['message' => 'Payment successful!']),
+            ]);
+            
+            if ($payment->status == 'succeeded') {
+                $order = Order::create([
+                    'user_id' => Auth::user()->id,
+                ]);
+                $order->courses()->attach($cart->courses->pluck('id')->toArray());
+                $cart->delete();
+                return redirect()->route('home', ['message'=> 'Payment successful!']);
+            }
+        }
+
     }
 }
