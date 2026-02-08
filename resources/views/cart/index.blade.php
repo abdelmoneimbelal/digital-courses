@@ -30,27 +30,29 @@
                             </h6>
                             <div>
                                 {{-- @if (Auth::user()->hasDefaultPaymentMethod())
-                                    <a href="#"
-                                    <a href="{{ route('direct.paymentMethod.oneClick') }}"
-                                        class="btn btn-sm btn-info">One
-                                        Click
-                                        Checkout</a>
+                                <a href="#" <a href="{{ route('direct.paymentMethod.oneClick') }}"
+                                    class="btn btn-sm btn-info">One
+                                    Click
+                                    Checkout</a>
                                 @endif --}}
-                               
-                                {{-- <a href="{{ route('checkout') }}"
-                                    class="btn btn-sm btn-success">Checkout</a> --}}
-                                {{-- <a href="{{ route('checkout.enableCoupons') }}"
-                                    class="btn btn-sm btn-info">Checkout with Coupons</a> --}}
+
+                                {{-- <a href="{{ route('checkout') }}" class="btn btn-sm btn-success">Checkout</a> --}}
+                                {{-- <a href="{{ route('checkout.enableCoupons') }}" class="btn btn-sm btn-info">Checkout
+                                    with Coupons</a> --}}
                                 {{-- <a href="{{ route('checkout.nonStripeProducts') }}"
                                     class="btn btn-sm btn-warning">Checkout with Non-Stripe Products</a> --}}
-                                {{-- <a href="{{ route('checkout.lineItems') }}"
-                                    class="btn btn-sm btn-primary">Checkout with Line Items</a>
-                                <a href="{{ route('checkout.guest') }}"
-                                    class="btn btn-sm btn-secondary">Checkout as Guest</a> --}}
-                                <a href="{{ route('direct.paymentMethod.oneClick') }}"
-                                    class="btn btn-sm btn-info">One Click Checkout</a>
-                                <a href="{{ route('direct.paymentMethod') }}"
-                                    class="btn btn-sm btn-success">Checkout with Payment Method</a>
+                                {{-- <a href="{{ route('checkout.lineItems') }}" class="btn btn-sm btn-primary">Checkout
+                                    with Line Items</a>
+                                <a href="{{ route('checkout.guest') }}" class="btn btn-sm btn-secondary">Checkout as
+                                    Guest</a> --}}
+                                @if (Auth::check() && Auth::user()->hasDefaultPaymentMethod())
+                                    <a href="{{ route('direct.paymentMethod.oneClick') }}" class="btn btn-sm btn-info">One Click
+                                        Checkout
+                                    </a>
+                                @endif
+                                <a href="{{ route('direct.paymentMethod') }}" class="btn btn-sm btn-success">Checkout with
+                                    Payment Method
+                                </a>
                             </div>
                         </div>
                     @else
